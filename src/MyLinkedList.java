@@ -52,9 +52,11 @@ public class MyLinkedList<E> {
     public boolean add(E element) {
         if (size == 0) {
             head = new Node(element);
+            size++;
         } else {
             Node node = head;
-            for (; node.next != null; node = node.next) {
+            while (node.next != null) {
+                node = node.next;
             }
             node.next = new Node(element);
             size++;
@@ -65,8 +67,7 @@ public class MyLinkedList<E> {
     public void add(int index, E element) {
         if (index < 0 || index > size) throw new IndexOutOfBoundsException();
         if (index == 0 ) {
-            Node node = new Node(element,head);
-            node = head;
+           head = new Node(element,head);
         } else {
         Node node = getNode(index - 1);
         node.next = new Node(element, node.next);
@@ -74,24 +75,23 @@ public class MyLinkedList<E> {
     }
     public  E removeI(int index) {
         if (index < 0 || index > size) throw new IndexOutOfBoundsException();
-        Node node3 = null;
+        Node node = null;
         if (size == 1) {
+            node = head;
             head = null;
-        }
-        if (indexOf(head) == index) {
-            Node node = head;
-            node.next = head;
-        }
-        if (index == size - 1) {
-            Node node = getNode(size-1);
-            node.next = null;
+        } else if (index == 0) {
+            node = head;
+            head = head.next;
+        } else if (index == size - 1) {
+            node = getNode(size - 1);
+           node.next = null;
         } else {
-            Node node1 = getNode(index - 1);
-            Node node = node1.next;
-            node1.next = node1.next.next;
+           Node currnode = getNode(index - 1);
+            node = currnode.next;
+            currnode.next = currnode.next.next;
         }
         size--;
-        return node3.element;
+        return node.element;
     }
     public  boolean removeO(Object obj) {
         int index = indexOf(obj);
@@ -102,6 +102,8 @@ public class MyLinkedList<E> {
         else return false;
     }
     public void display() {
+        System.out.println("\n");
+        System.out.println("Head is " + head.element);
         Node node = head;
         while (node != null) {
             System.out.println(node.element + " ");
